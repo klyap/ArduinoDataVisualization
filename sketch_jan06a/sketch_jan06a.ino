@@ -2,7 +2,8 @@
 
 #define PIXEL_PIN    6    // Digital IO pin connected to the NeoPixels.
 
-#define NUMPIXELS 6
+//assumptions
+#define NUMPIXELS 5
 #define TIME 2
 
 // Parameter 1 = number of pixels in strip
@@ -27,25 +28,42 @@ void setup() {
 }
 
 // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+
+//hard coded data arrays:
 //supposed to flash blue green blue grren
-uint32_t unstable[] = {pixels.Color(0, 255, 0), pixels.Color(0, 255, 0),pixels.Color(0, 255, 0),pixels.Color(0, 255, 0),pixels.Color(0, 255, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0)};
+//uint32_t unstable[] = {pixels.Color(0, 255, 0), pixels.Color(0, 255, 0),pixels.Color(0, 255, 0),pixels.Color(0, 255, 0),pixels.Color(0, 255, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0)};
 //supposed to flash off red off red
-uint32_t stable[] = {pixels.Color(0, 0, 0), pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255)};
+//uint32_t stable[] = {pixels.Color(0, 0, 0), pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255)};
+
+int incomingByte = 0;
 
 void loop() {
-  
+  lightController(500);
    
-  // Some example procedures showing how to display to the pixels:
-  lightController(unstable, 500);
-  lightController(stable, 500);
+  // Using hard coded data
+  //lightController(unstable, 500);
+  //lightController(stable, 500);
 }
 
-void lightController(uint32_t color[], uint8_t wait) {
+//void lightController(uint32_t color[], uint8_t wait) {     //using hard coded data
+void lightController(uint8_t wait) {
 
     for (int j=0;j<TIME;j++){
+     
   // For a set of NeoPixels the first NeoPixel is 0, second is 1, all the way up to the count of pixels minus one.
       for(int i=1;i<NUMPIXELS+1;i++){
-        pixels.setPixelColor(i-1, color[(i-1)+j*NUMPIXELS]);
+        if (Serial.available() > 0) {
+            // read the incoming byte:
+            incomingByte = Serial.read();
+        }
+        if (incomingByte == 0){
+          pixels.setPixelColor(i-1, pixels.Color(0,0,0));
+        }else if (incomingByte == 1){
+          pixels.setPixelColor(i-1, pixels.Color(255,0,0));
+        }else{
+          pixels.setPixelColor(i-1, pixels.Color(0,0,255));
+        }  
+        
       }
       pixels.show(); // This sends the updated pixel color to the hardware.
       delay(wait); // Delay for a period of time (in milliseconds).
