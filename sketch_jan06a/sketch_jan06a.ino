@@ -21,26 +21,28 @@ Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIXEL_PIN, NEO_GRB + NEO
 // on a live circuit...if you must, connect GND first.
 
 void setup() {
+  Serial.begin(9600);     // opens serial port for reading file, sets data rate to 9600 bps
   pixels.begin();
   pixels.show(); // Initialize all pixels to 'off'
 }
 
 // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
 //supposed to flash blue green blue grren
-uint32_t unstable[] = {pixels.Color(0, 255, 0), pixels.Color(0, 255, 0),pixels.Color(0, 255, 0),pixels.Color(0, 255, 0),pixels.Color(0, 255, 0),pixels.Color(0, 255, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0)};
+uint32_t unstable[] = {pixels.Color(0, 255, 0), pixels.Color(0, 255, 0),pixels.Color(0, 255, 0),pixels.Color(0, 255, 0),pixels.Color(0, 255, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0),pixels.Color(255, 0, 0)};
 //supposed to flash off red off red
-uint32_t stable[] = {pixels.Color(0, 0, 0), pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255)};
+uint32_t stable[] = {pixels.Color(0, 0, 0), pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255)};
 
 void loop() {
+  
+   
   // Some example procedures showing how to display to the pixels:
   lightController(unstable, 500);
   lightController(stable, 500);
 }
 
 void lightController(uint32_t color[], uint8_t wait) {
-  while (true){
-    
-    for (int j=1;j<TIME+1;j++){
+
+    for (int j=0;j<TIME;j++){
   // For a set of NeoPixels the first NeoPixel is 0, second is 1, all the way up to the count of pixels minus one.
       for(int i=1;i<NUMPIXELS+1;i++){
         pixels.setPixelColor(i-1, color[(i-1)+j*NUMPIXELS]);
@@ -49,5 +51,4 @@ void lightController(uint32_t color[], uint8_t wait) {
       delay(wait); // Delay for a period of time (in milliseconds).
       
     }
-  }
 }
