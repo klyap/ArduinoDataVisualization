@@ -22,7 +22,7 @@ void draw() {
  if (mySwitch>0){
  /*The readData function can be found later in the code.
  This is the call to read a CSV file on the computer hard-drive. */
- readData("testingData.txt");
+ readData("C:/Users/klyap_000/Documents/sampleData.txt");
  
  /*The following switch prevents continuous reading of the text file, until
  we are ready to read the file again. */
@@ -35,10 +35,13 @@ void draw() {
  There will be a delay of half a second before the command is
  sent to turn the LED off : myPort.write('0'); */
  myPort.write(subtext[counter]);
+ System.out.println(subtext[counter]);
+ 
  delay(500);
  //myPort.write('0');
+ 
  delay(100);
- //Increment the counter so that the next number is sent to the arduino.
+ //Increment the counter so that the next number is sent1212 to the arduino.
  counter++;
  } else{
  //If the text file has run out of numbers, then read the text file again in 5 seconds.
@@ -62,6 +65,7 @@ void readData(String myFileName){
  while((text=br.readLine())!=null){
  /* Spilt each line up into bits and pieces using a comma as a separator */
  subtext = splitTokens(text,",");
+ System.out.println(subtext + "in fileread");
  }
  }catch(FileNotFoundException e){
  e.printStackTrace();

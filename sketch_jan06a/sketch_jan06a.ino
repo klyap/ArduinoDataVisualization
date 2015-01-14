@@ -25,7 +25,6 @@ void setup() {
   Serial.begin(9600);     // opens serial port for reading file, sets data rate to 9600 bps
   pixels.begin();
   pixels.show(); // Initialize all pixels to 'off'
-  Serial.printlnTa("fjjwfiw");
 }
 
 // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
@@ -36,8 +35,8 @@ void setup() {
 //supposed to flash off red off red
 //uint32_t stable[] = {pixels.Color(0, 0, 0), pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 0),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255),pixels.Color(0, 0, 255)};
 
-int incomingByte = 0;
-
+int incomingByte;
+char testByte;
 void loop() {
   lightController(500);
 
@@ -53,50 +52,62 @@ void lightController(uint8_t wait) {
 
   // For a set of NeoPixels the first NeoPixel is 0, second is 1, all the way up to the count of pixels minus one.
   if (Serial.available() > 0) {
+    pixels.setPixelColor(0, pixels.Color(0,255,0));
+    pixels.show(); // This sends the updated pixel color to the hardware.
+    delay(wait); // Delay for a period of time (in milliseconds).
+   
     for(int i=1;i<NUMPIXELS+1;i++){
-
-
       if (Serial.available() > 0) {
+        
         // read the incoming byte:
         incomingByte = Serial.read();
-
-        char buf[4];
-
-        Serial.println(itoa(incomingByte, buf, 10));
+        
+        Serial.println("int & char:");
+        Serial.println(incomingByte);
+        Serial.println(incomingByte);
+        
         incomingByte = incomingByte-'0';
-        Serial.println();
-        Serial.println(i);
-
+        
+        char buf[4];
+        Serial.println("received:");
+        Serial.println(itoa(incomingByte, buf, 10));
+        
         delay(5);
 
-        if (incomingByte == 0){
+        if (incomingByte <= 0){
           //Serial.println(i);
-          pixels.setPixelColor(i-1, pixels.Color(0,0,0));
+          pixels.setPixelColor(i-1, pixels.Color(0,0,255));
         }
         else if (incomingByte == 1){
           //Serial.println(i);
-          pixels.setPixelColor(i-1, pixels.Color(50,0,0));
+          pixels.setPixelColor(i-1, pixels.Color(255,20,147));
         }
         else if (incomingByte == 2){
           //Serial.println(i);
-          pixels.setPixelColor(i-1, pixels.Color(0,0,50));
+          pixels.setPixelColor(i-1, pixels.Color(255, 215, 0));
+        }
+        else if (incomingByte == 3){
+          //Serial.println(i);
+          pixels.setPixelColor(i-1, pixels.Color(255, 69, 0));
+        }
+        else if (incomingByte >= 4){
+          //Serial.println(i);
+          pixels.setPixelColor(i-1, pixels.Color(124,252,50));
         }
         else{
           //Serial.println(i);
-          pixels.setPixelColor(i-1, pixels.Color(0,50,0));
+          pixels.setPixelColor(i-1, pixels.Color(50,0,0));
         }  
 
 
       }
-      else{
-        pixels.setPixelColor(0, pixels.Color(50,50,50));
-      }
-
-
+      
     }
     pixels.show(); // This sends the updated pixel color to the hardware.
     delay(wait); // Delay for a period of time (in milliseconds).
-    //}
-  }
+    }  
+
+  //}
+  
 }
 
