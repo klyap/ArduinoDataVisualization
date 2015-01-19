@@ -17,8 +17,7 @@ void setup(){
 void draw(){
   while (comPort.available() > 0) {
     int inByte = comPort.read();
-    println("read");
-    println(inByte);
+
   }
 }
 
