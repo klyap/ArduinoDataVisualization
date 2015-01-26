@@ -53,7 +53,8 @@ public class StringLoader extends Thread{
  }
  
  public void run() {
- String textFileLines[]=loadStrings("C:/Users/klyap_000/Documents/sampleData.txt");
+ //String textFileLines[]=loadStrings("C:/Users/klyap_000/Documents/sampleData.txt");
+ String textFileLines[]=loadStrings("C:/Users/klyap_000/Documents/GitHub/ArduinoVisualization/sampleData.txt");
  String lineItems[]=splitTokens(textFileLines[0], ",");
  numItems=lineItems.length;
  for(int i = counter; i<numItems; i++){

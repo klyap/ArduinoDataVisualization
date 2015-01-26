@@ -1,7 +1,7 @@
 #include <Adafruit_NeoPixel.h>
 
 #define PIXEL_PIN    6    // Digital IO pin connected to the NeoPixels.
-#define WAIT  500
+#define WAIT  1000
 
 // Parameter 1 = number of pixels in strip
 // Parameter 2 = Arduino pin number (most are valid)
@@ -10,7 +10,7 @@
 //   NEO_KHZ400  400 KHz (classic 'v1' (not v2) FLORA pixels, WS2811 drivers)
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
-Adafruit_NeoPixel pixels = Adafruit_NeoPixel(200, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(155, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
@@ -34,6 +34,7 @@ void setup() {
 
 int incomingByte;
 char testByte;
+int counter = 0;
 void loop() {
   lightController(WAIT);
 
@@ -50,15 +51,11 @@ void lightController(uint8_t wait) {
   // For a set of NeoPixels the first NeoPixel is 0, second is 1, all the way up to the count of pixels minus one.
   if (Serial.available() > 0) {
     
-    //if serial available, 1st LED = green
-    /**
-    pixels.setPixelColor(0, pixels.Color(0,255,0));
-    pixels.show(); // This sends the updated pixel color to the hardware.
-    delay(wait); // Delay for a period of time (in milliseconds).
-   **/
+    
     for(int i=1;i<pixels.numPixels();i++){
       if (Serial.available() > 0) {
-        
+         counter++;
+         //Serial.println(counter);
         // read the incoming byte:
         incomingByte = Serial.read();
         //incomingByte = 0;  //for debugging
@@ -67,38 +64,41 @@ void lightController(uint8_t wait) {
         //Serial.println(testByte);
         
         incomingByte = incomingByte-'0';
-        Serial.println(incomingByte);          //testing
+       //Serial.println(incomingByte);          //testing
         /**
         char buf[4];
         Serial.println("received:");
         Serial.println(itoa(incomingByte, buf, 10));
         **/
-        delay(5);
+delay(1);
         
-        if (incomingByte <= 0){
+        if (incomingByte == 0){
           //Serial.println(i);
           pixels.setPixelColor(i-1, pixels.Color(0,0,0));
         }
         else if (incomingByte == 1){
           //Serial.println(i);
-          pixels.setPixelColor(i-1, pixels.Color(255,20,147));
+          pixels.setPixelColor(i-1, pixels.Color(255,20,147)); //pink
         }
         else if (incomingByte == 2){
           //Serial.println(i);
-          pixels.setPixelColor(i-1, pixels.Color(255, 69, 0));
+          pixels.setPixelColor(i-1, pixels.Color(255, 69, 0)); //orange
         }
         else if (incomingByte == 3){
           //Serial.println(i);
-          pixels.setPixelColor(i-1, pixels.Color(255, 215, 0));
+          pixels.setPixelColor(i-1, pixels.Color(255, 215, 0)); //yellow
         }
-        else if (incomingByte >= 4){
+        else if (incomingByte == 4){
           //Serial.println(i);
-          pixels.setPixelColor(i-1, pixels.Color(124,252,50));
+          pixels.setPixelColor(i-1, pixels.Color(124,252,50)); //green
         }
-        else{
+        else if (incomingByte == 5){
           //Serial.println(i);
-          pixels.setPixelColor(i-1, pixels.Color(0,255,255));
-        }  
+          pixels.setPixelColor(i-1, pixels.Color(0,255,255)); //blue
+        }  else{
+          pixels.setPixelColor(i-1, pixels.Color(0,0,0));
+        
+        }
         
 
       }
