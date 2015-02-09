@@ -34,6 +34,7 @@ void mousePressed() {
  text file values to the Arduino */
  sLoader=new StringLoader();
  sLoader.start();
+ 
  }else{
  background(255,0,0); //Change background to red
  //Reset the counter
@@ -53,14 +54,30 @@ public class StringLoader extends Thread{
  }
  
  public void run() {
+ //String textFileLines[]=loadStrings("C:/Users/klyap_000/Documents/ones.txt");
  //String textFileLines[]=loadStrings("C:/Users/klyap_000/Documents/sampleData.txt");
- String textFileLines[]=loadStrings("C:/Users/klyap_000/Documents/GitHub/ArduinoVisualization/sampleData.txt");
+ //String textFileLines[]=loadStrings("C:/Users/klyap_000/Documents/finaltwinned.txt");
+ //String textFileLines[]=loadStrings("C:/Users/klyap_000/Documents/mergedfinal.txt");
+ String textFileLines[]=loadStrings("C:/Users/klyap_000/Documents/9threshmerged.txt");
+ //String textFileLines[]=loadStrings("C:/Users/klyap_000/Documents/GitHub/ArduinoVisualization/oneline.txt");
+ 
  String lineItems[]=splitTokens(textFileLines[0], ",");
  numItems=lineItems.length;
+ System.out.println(numItems);
+ int num = 0;
+ //while(true){
+ //counter = 0;
  for(int i = counter; i<numItems; i++){
  comPort.write(lineItems[i]);
  //comPort.write('1');
- System.out.println("sent " + lineItems[i]);
+ //System.out.println("sent " + lineItems[i]);
+ delay(5);
+ if (i % 310 == 0) {
+   num = num + 1;
+   System.out.println("$$$$$$$$$$ # of 155's " + num + " $$$$$$$$$$");  
+   delay(100);
+
+ }
  //delay(500);
  //comPort.write("0");
  //System.out.println("sent 0");
@@ -68,5 +85,6 @@ public class StringLoader extends Thread{
  }
  counter=numItems;
  }
+ //}// while
 }
 
